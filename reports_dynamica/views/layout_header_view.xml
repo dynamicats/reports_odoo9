@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- HEADER FORMAT 01 -->
+        <template id="header_format_01" name="Header format 01">
+            <div class="row">
+
+                <div class="col-xs-8">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 60px;"/>
+                </div>
+                <div style="text-align: right;" class="col-xs-4" name="company_data">
+                    <strong><div style="font-size:11px;" t-field="company.name"/></strong>
+                    <div>
+                      <strong><span style="font-size:9px;" t-if="company.company_registry">RUC: </span></strong>
+                      <span style="font-size:9px;" t-field="company.company_registry"/>
+                    </div>
+                    <div style="font-size:9px;" t-field="company.street"/>
+                    <div style="font-size:9px;" t-field="company.country_id"/>
+                    <div>
+                      <span style="font-size:9px;" t-if="company.phone">Telefono: </span>
+                      <span style="font-size:9px;" t-field="company.phone"/>
+                    </div>
+                    <div>
+                      <span style="font-size:9px;" t-if="company.email">Email: </span>
+                      <span style="font-size:9px;" t-field="company.email"/>
+                    </div>
+                    <div>
+                        <t t-call="reports_dynamica_invoice.invoice_title_format_01"/>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <record id="external_layout_header_inherit_dynamica" model="ir.ui.view">
+            <field name="name">Report Header</field>
+            <field name="inherit_id" ref="report.external_layout_header" />
+            <field name="model"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='header']" position="replace">
+                    <div class="header">
+                      <t t-set="company" t-value="o.company_id if o else doc.company_id"/>
+                      <t t-call="reports_dynamica.header_format_01"/>
+                      <div name="company_address"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

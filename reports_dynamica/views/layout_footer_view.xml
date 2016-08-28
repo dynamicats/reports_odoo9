@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+      <template id="footer_format_01" name="Footer format 01">
+        <div class="text-center" style="border-top: 1px solid black;">
+            <ul t-if="not company.custom_footer" class="list-inline">
+                <li style="font-size:8px" t-if="company.name"> <span t-field="company.name"/></li>
+
+                <li style="font-size:8px" t-if="company.name">&amp;bull;</li>
+                <li style="font-size:8px" t-if="company.street"> <span t-field="company.street"/></li>
+
+                <li style="font-size:8px" t-if="company.name and company.street">&amp;bull;</li>
+                <li style="font-size:8px" t-if="company.country_id"> <span t-field="company.country_id"/></li>
+
+                <li style="font-size:8px" t-if="company.name and company.street and company.country_id">&amp;bull;</li>
+                <li style="font-size:8px" t-if="company.phone"><span t-field="company.phone"/></li>
+
+                <li style="font-size:8px" t-if="company.name and company.street and company.country_id and company.phone">&amp;bull;</li>
+                <li style="font-size:8px" t-if="company.website"><span t-field="company.website"/></li>
+            </ul>
+
+            <ul class="list-inline">
+                <li style="font-size:8px">Página:</li>
+                <li style="font-size:8px"><span class="page"/></li>
+                <li style="font-size:8px">/</li>
+                <li style="font-size:8px"><span class="topage"/></li>
+            </ul>
+        </div>
+      </template>
+
+      <record id="external_layout_footer_inherit_dynamica" model="ir.ui.view">
+          <field name="name">Report Footer</field>
+          <field name="inherit_id" ref="report.external_layout_footer" />
+          <field name="model"></field>
+          <field name="arch" type="xml">
+              <xpath expr="//div[@class='footer']" position="replace">
+                  <div class="footer">
+                    <t t-set="company" t-value="o.company_id if o else doc.company_id"/>
+                    <t t-call="reports_dynamica.footer_format_01"/>
+                  </div>
+              </xpath>
+          </field>
+      </record>
+
+
+  </data>
+</openerp>
